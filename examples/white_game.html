@@ -37,8 +37,10 @@
             template: '#rook_template',
             components: [
               'position',
+              //is it scale that's causing issues? 
               'scale',
               {
+                
                 component: 'material',
                 property: 'color'
               }
@@ -373,7 +375,7 @@ like what you would expect our full on entity to look like. The main diff is tha
       </a-entity>
 
       <a-entity
-        networked="template:#rook_template; networkID:rook_w_r; persistent:true; owner:scene"
+        networked="template:#rook_template; networkId:rook_w_r; persistent:true; owner:scene"
         id="rook_w_r"
         mixin="rook_w"
         position=" 2   1.5 -1  "
