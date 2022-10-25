@@ -45,6 +45,25 @@
             ]
           });
         }
+        
+        //okay so this is missing a few components, so if it's not working
+        //as intended, you may need to go back and add those 
+        if (!NAF.schemas.hasTemplate('#cursor-plane-template')) {
+          //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
+          //as shown below. 
+          NAF.schemas.add({
+            template: '#cursor-plane-template',
+            components: [
+              'position',
+              'scale',
+              {
+                component: 'material',
+                property: 'color'
+              }
+            ]
+          });
+        }
+
 
         //wait, do I have to add an entire 32 schemeas under here? Please no. 
 
@@ -286,6 +305,24 @@ like what you would expect our full on entity to look like. The main diff is tha
           </a-entity>
           
         </template>
+
+        <!--90% certain the cursor plane needs a template-->
+        <template id="cursor-plane-template">
+
+          <!--Like I said, not sure if this cursor-listener is needed
+          BUT WE FINNA FIND OUT-->
+          <a-entity 
+          cursor-listener 
+          geometry="primitive plane"
+          position=".25, 1.51, -2.75"
+          visible="false"
+          rotation="-90 0 0"
+          height="4"
+          width="4"
+          >
+
+          </a-entity>
+        </template>
         
       </a-assets>
 
@@ -336,7 +373,7 @@ like what you would expect our full on entity to look like. The main diff is tha
       </a-entity>
 
       <a-entity
-        networked="template: #rook_template networkID:rook_w_r; persistent:true; owner:scene"
+        networked="template:#rook_template; networkID:rook_w_r; persistent:true; owner:scene"
         id="rook_w_r"
         mixin="rook_w"
         position=" 2   1.5 -1  "
@@ -526,12 +563,14 @@ like what you would expect our full on entity to look like. The main diff is tha
         boardPos="f7"
         position=" 1    1.5 -4  "
       ></a-entity>
+
       <a-entity
         id="pawn_b_7"
         mixin="pawn_b"
         boardPos="g7"
         position=" 1.5  1.5 -4  "
       ></a-entity>
+
       <a-entity
         id="pawn_b_8"
         mixin="pawn_b"
@@ -555,9 +594,12 @@ like what you would expect our full on entity to look like. The main diff is tha
       <!--These peices represent the squares, or planes. For now as you can see, we've only set up a couple for testing essentially-->
 
       <!-- This plane is used to detect clicks on the chessboard-->
+      
+      <!--Not sure if I need to add the cur-->
       <a-plane
+        networked="template:#cursor-plane-template; networkId:cursor-plane; persistent:true; owner:scene"
         id="cursor-plane"
-        cursor-listener
+        cursor-listener 
         geometry="primitive plane"
         position=".25, 1.51, -2.75"
         visible="false"
