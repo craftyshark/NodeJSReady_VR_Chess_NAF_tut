@@ -11,7 +11,13 @@
     <script src="/dist/networked-aframe.js"></script>
     <script>
       // see issue https://github.com/networked-aframe/networked-aframe/issues/267
+
+      //gave myself some extra space to analyze this shit. (cursing is fine. If someone is code reviewing this
+      //yo're code reviewing the wrong thing)
+
+
       NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+
       NAF.schemas.getComponents = (template) => {
         if (!NAF.schemas.hasTemplate('#avatar-template')) {
           NAF.schemas.add({
@@ -27,7 +33,20 @@
             ]
           });
         }
+        
+        //so, by my guess, the if checks if this exists in the scene yet, if it doesm 
+        //THEN it adds the schema for it.one sec. 
+        //yea not entirely sure how this works, just going to make sure to move over everything except material
+        //as well as the color changer
+        //anyways, I belive this if statment checks if there's a sphere in play at all, so yea
+        //sorry jacob, gotta write hell of the mfers, high key surprised the plane still works 
+        //just checked, technically it doesn't. Likely two seperate planes. 
+
+        //Basically everything that moves or is in interaction, needs this right here, and maybe more.
+        //checking now. 
         if (!NAF.schemas.hasTemplate('#sphere-template')) {
+          //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
+          //as shown below. 
           NAF.schemas.add({
             template: '#sphere-template',
             components: [
@@ -39,15 +58,25 @@
             ]
           });
         }
+
         const components = NAF.schemas.getComponentsOriginal(template);
         return components;
+
       };
+
     </script>
 
     <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
     <script src="https://unpkg.com/aframe-environment-component@1.3.1/dist/aframe-environment-component.min.js"></script>
     <script src="/js/spawn-in-circle.component.js"></script>
+    <!--ahhhh, there we are my color changing pretty. Where are you color-changer.component. 
+    also, what exactly is a component, in this entity component system? 
+      *sigh* good news: We won't need this, bad news: We may in fact need 32 fudging templates
+    please shoot me. -->
+
     <script src="/js/color-changer.component.js"></script>
+
+
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
   </head>
   <body>
@@ -61,6 +90,11 @@
     >
       <a-assets>
         <!-- Templates -->
+
+        <!--Okay so here is the sphere template, so I'm guessing here is where I would go ahead 
+        and start dropping chess piece templates? hm. Do I need one? -->
+        <!--color changer is set as a component, and added to this entitiy inside this template
+        I wonder if that's what brett meant-->
         <template id="sphere-template">
           <a-entity class="raycastable" geometry="primitive: sphere" material="color: red" color-changer></a-entity>
         </template>
@@ -99,7 +133,7 @@
 
       <a-entity
         id="sphere"
-        networked="template:#sphere-template;networkId:sphere;persistent:true;owner:scene"
+        networked="template:#sphere-template; networkId:sphere; persistent:true; owner:scene"
       ></a-entity>
       <!--
         Specifying a owner that isn't a real participant is used so that the

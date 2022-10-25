@@ -13,6 +13,7 @@
     <script>
       // see issue https://github.com/networked-aframe/networked-aframe/issues/267
       NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+
       NAF.schemas.getComponents = (template) => {
         if (!NAF.schemas.hasTemplate("#avatar-template")) {
           NAF.schemas.add({
@@ -28,6 +29,25 @@
             ],
           });
         }
+
+        if (!NAF.schemas.hasTemplate('#rook_template')) {
+          //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
+          //as shown below. 
+          NAF.schemas.add({
+            template: '#rook_template',
+            components: [
+              'position',
+              'scale',
+              {
+                component: 'material',
+                property: 'color'
+              }
+            ]
+          });
+        }
+
+        //wait, do I have to add an entire 32 schemeas under here? Please no. 
+
         const components = NAF.schemas.getComponentsOriginal(template);
         return components;
       };
@@ -316,7 +336,7 @@ like what you would expect our full on entity to look like. The main diff is tha
       </a-entity>
 
       <a-entity
-        networked="template: #rook_template"
+        networked="template: #rook_template networkID:rook_w_r; persistent:true; owner:scene"
         id="rook_w_r"
         mixin="rook_w"
         position=" 2   1.5 -1  "
