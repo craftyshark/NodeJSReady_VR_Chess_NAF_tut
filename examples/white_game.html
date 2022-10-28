@@ -29,7 +29,7 @@
             ],
           });
         }
-
+        
         if (!NAF.schemas.hasTemplate('#rook_template')) {
           //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
           //as shown below. 
@@ -37,19 +37,33 @@
             template: '#rook_template',
             components: [
               'position',
-              //is it scale that's causing issues? 
-              'scale',
+              'rotation',
               {
-                
-                component: 'material',
-                property: 'color'
+                component: 'gltf-model',
+                property: '#rook_w'
+              },
+              {
+                component: 'src',
+                property: '/src/models/sets/default/white/rook.gltf'
+              },
+              {
+                component: 'scale',
+                property: '0.2 0.2 0.2'
+              },
+              {
+                component: 'position',
+                property: '2 1.5 -1'
               }
+              //is it scale that's causing issues? 
+              //'scale',
+              
             ]
           });
         }
         
         //okay so this is missing a few components, so if it's not working
         //as intended, you may need to go back and add those 
+        /*
         if (!NAF.schemas.hasTemplate('#cursor-plane-template')) {
           //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
           //as shown below. 
@@ -65,7 +79,10 @@
             ]
           });
         }
+        */
+        
 
+        
 
         //wait, do I have to add an entire 32 schemeas under here? Please no. 
 
@@ -140,10 +157,12 @@
           gltf-model="#rook_w"
           id="rook_w"
           src="/src/models/sets/default/white/rook.gltf"
-          geometry="primitive: box"
-          material="color: blue"
           scale="0.2 0.2 0.2"
+          position="2 1.5 -1"
         ></a-mixin>
+
+        <!--If your next idea doesn't work, try specifically 
+        managing the assets-->
         <a-mixin
           gltf-model="#rook_b"
           id="rook_b"
@@ -374,11 +393,14 @@ like what you would expect our full on entity to look like. The main diff is tha
         </a-entity>
       </a-entity>
 
+      <!--mixin="rook_w" trying something even stupider. 
+      if I understand mixins and temps correctly, 
+      no mixin is needed here-->
       <a-entity
-        networked="template:#rook_template; networkId:rook_w_r; persistent:true; owner:scene"
-        id="rook_w_r"
-        mixin="rook_w"
-        position=" 2   1.5 -1  "
+      id="rook_w_r"
+
+      networked="template:#rook_template;networkId:rookwr;persistent:true; owner:scene"
+        
       ></a-entity>
       
       <a-entity
@@ -598,8 +620,9 @@ like what you would expect our full on entity to look like. The main diff is tha
       <!-- This plane is used to detect clicks on the chessboard-->
       
       <!--Not sure if I need to add the cur-->
+      <!--        networked="template:#cursor-plane-template; networkId:cursor-plane; persistent:true; owner:scene"
+-->
       <a-plane
-        networked="template:#cursor-plane-template; networkId:cursor-plane; persistent:true; owner:scene"
         id="cursor-plane"
         cursor-listener 
         geometry="primitive plane"

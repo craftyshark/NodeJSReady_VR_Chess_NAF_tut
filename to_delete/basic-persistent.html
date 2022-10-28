@@ -47,6 +47,7 @@
         if (!NAF.schemas.hasTemplate('#sphere-template')) {
           //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
           //as shown below. 
+
           NAF.schemas.add({
             template: '#sphere-template',
             components: [
@@ -96,7 +97,11 @@
         <!--color changer is set as a component, and added to this entitiy inside this template
         I wonder if that's what brett meant-->
         <template id="sphere-template">
-          <a-entity class="raycastable" geometry="primitive: sphere" material="color: red" color-changer></a-entity>
+          <a-entity 
+          class="raycastable" 
+          geometry="primitive: sphere" 
+          material="color: red" 
+          color-changer></a-entity>
         </template>
 
         <!-- Avatar -->
