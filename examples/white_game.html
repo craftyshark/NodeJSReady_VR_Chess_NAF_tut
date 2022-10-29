@@ -8,31 +8,34 @@
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="/easyrtc/easyrtc.js"></script>
-    <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
+    <script src="/dist/networked-aframe.js"></script>
 
     <script>
       // see issue https://github.com/networked-aframe/networked-aframe/issues/267
       NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
 
       NAF.schemas.getComponents = (template) => {
-        if (!NAF.schemas.hasTemplate("#avatar-template")) {
+        if (!NAF.schemas.hasTemplate('#avatar-template')) {
           NAF.schemas.add({
-            template: "#avatar-template",
+            template: '#avatar-template',
             components: [
-              "position",
-              "rotation",
+              'position',
+              'rotation',
               {
-                selector: ".head",
-                component: "material",
-                property: "color",
-              },
-            ],
+                selector: '.head',
+                component: 'material',
+                property: 'color'
+              }
+            ]
           });
         }
         
+        //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
+        //as shown below.
+        //is it scale that's causing issues? 
+        //'scale',
+        /*
         if (!NAF.schemas.hasTemplate('#rook_template')) {
-          //anyways, after the if, it adds said schema and the properties below. every component needs a new, component area. 
-          //as shown below. 
           NAF.schemas.add({
             template: '#rook_template',
             components: [
@@ -43,23 +46,17 @@
                 property: '#rook_w'
               },
               {
-                component: 'src',
-                property: '/src/models/sets/default/white/rook.gltf'
-              },
-              {
                 component: 'scale',
                 property: '0.2 0.2 0.2'
               },
               {
                 component: 'position',
                 property: '2 1.5 -1'
-              }
-              //is it scale that's causing issues? 
-              //'scale',
-              
+              }  
             ]
           });
         }
+        */
         
         //okay so this is missing a few components, so if it's not working
         //as intended, you may need to go back and add those 
@@ -100,7 +97,7 @@
       networked-scene="
       room: notBasic;
       debug: true;
-      adapter: wseasyrtc;
+      adapter: wseasyrtc
     "
     >
       <!--Checking to make sure I set up git hub correctly -->
@@ -109,6 +106,8 @@
 
       <a-assets>
         <!--assets, this is where networked a frame seems to be not vibin -->
+        <a-asset-item id="rook_w" src="src/models/sets/default/white/rook.gltf">
+        </a-asset-item>
 
         <!-- Templates -->
         
@@ -153,14 +152,15 @@
 
         <!--seeing if it's possible to even add mixin's with glitch yelling at me-->
         <!--mixin's are kind of like classes, grouping of attributes-->
-        <a-mixin
+        <!--<a-mixin
           gltf-model="#rook_w"
           id="rook_w"
           src="/src/models/sets/default/white/rook.gltf"
           scale="0.2 0.2 0.2"
           position="2 1.5 -1"
         ></a-mixin>
-
+        -->
+        <!--For my next trick, I will yeet the mixins-->
         <!--If your next idea doesn't work, try specifically 
         managing the assets-->
         <a-mixin
@@ -316,7 +316,10 @@
 
         <template id="rook_template">
           <a-entity
-        mixin="rook_w"
+          gltf-model="#rook_w"
+          src="/src/models/sets/default/white/rook.gltf"
+          scale="0.2 0.2 0.2"
+          position="2 1.5 -1"
         >
             <!--so the documentation says, something, not sure what needs a root elem
             for now, I'm going to try exactly what you see here. An entity that should look exactly 
@@ -398,8 +401,7 @@ like what you would expect our full on entity to look like. The main diff is tha
       no mixin is needed here-->
       <a-entity
       id="rook_w_r"
-
-      networked="template:#rook_template;networkId:rookwr;persistent:true; owner:scene"
+      networked="template:#rook_template;networkId:rookwr;persistent:true; "
         
       ></a-entity>
       
@@ -1139,6 +1141,9 @@ like what you would expect our full on entity to look like. The main diff is tha
       // Called by Networked-Aframe when connected to server
       function onConnect() {
         console.log("onConnect", new Date());
+        document.body.addEventListener('clientConnected', function (evt) {
+          console.error('clientConnected event. clientId =', evt.detail.clientId);
+        });
       }
     </script>
   </body>

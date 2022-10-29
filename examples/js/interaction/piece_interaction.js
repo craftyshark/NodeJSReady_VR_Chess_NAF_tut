@@ -2,6 +2,7 @@
 // It's a 4x4 plane tiled sideways, so Z is "upwards" instead of Y.
 AFRAME.registerComponent('cursor-listener', {
     init: function () {
+        
         // Grab a reference to the plane we'll use to signify when
         // we highlight a piece. It starts invisible, but well
         // make it visible when we click on it
@@ -91,6 +92,7 @@ AFRAME.registerComponent('cursor-listener', {
 
         this.el.addEventListener('mousedown', function (obj) {  //this.el points to what element you are about to click on, you're attaching event listen to that, mousedown fires the the 
             //function following it. this.el gets assigned to obj as, like a reference? we think. 
+            
             if (!obj.detail.intersection) //if there's no intersection(if you don't click on the board) it yeets you
                 return;
                 
@@ -109,6 +111,7 @@ AFRAME.registerComponent('cursor-listener', {
                 // Cleanup event handlers so we don't get _another_
                 // listener every time we click
                 this.removeEventListener('mouseup', onMouseUp); //ask about this. to whatever subject matter expert we can find 
+                NAF.utils.takeOwnership(rook_w_r); //this is a function that takes ownership of the rook. please work
 
                 const endPosition = worldToBoard(evt.detail.intersection.point) //When you mouse up, that position is coppied to end position
                 console.log('Moving to: ', boardToChessTerm(endPosition))
@@ -122,4 +125,8 @@ AFRAME.registerComponent('cursor-listener', {
       });
      
     }
+
+
+
+    
 });
